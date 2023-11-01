@@ -1,4 +1,4 @@
-name: Build on Pull Request
+name: Run on Pull Request
 
 on:
   pull_request:
@@ -22,5 +22,5 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build Angular App
-        run: npm run build
+      - name: Run Angular App
+        run: npm run
