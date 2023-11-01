@@ -23,9 +23,10 @@ jobs:
 
       - name: Run Tests
         run: npm test
+        working-directory: ../movie-app/
 
       - name: Archive Test Results
         uses: actions/upload-artifact@v2
         with:
           name: test-results
-          path: src/app
+          path: ../movie-app/
