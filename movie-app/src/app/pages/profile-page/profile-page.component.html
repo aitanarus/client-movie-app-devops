@@ -1,0 +1,67 @@
+<div class="profile-container mt-5" *ngIf="profile">
+  <div class="top">
+    <div class="left">
+      <div class="cover">
+        <img
+          src="../assets/icons/user.png"
+          alt="Profile icon"
+          width="256"
+          height="256"
+        />
+        <h3 class="username">@{{ profile.User.Username }}</h3>
+      </div>
+    </div>
+    <div class="right">
+      <div class="vl mb-4 mt-5"><h4 class="title">Update Profile</h4></div>
+      <div class="rating-form">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="text" name="email" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="uname">Username</label>
+          <input type="text" name="uname" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="text" name="password" class="form-control" />
+        </div>
+        <div class="btn-container">
+          <button class="btn btn-dark">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom">
+    <div class="vl mb-4"><h4 class="title">Reviews</h4></div>
+    <div class="reviews" *ngIf="profile.Reviews.length > 0">
+      <div class="review" *ngFor="let review of profile?.Reviews">
+        <div class="review-details">
+          <div class="review-left">
+            <div class="author">Movie: {{ review.MovieTitle }}</div>
+            <div class="author">{{ review.ReviewTitle }}</div>
+            <div class="mt-2">
+              {{ review.Review }}
+            </div>
+            <div class="author_dt mt-2">
+              {{ review.PublishedOn | date : "dd-MMM-YYYY" }}
+            </div>
+          </div>
+          <div class="review-right">
+            <div class="rating">
+              <app-star-rating
+                [rating]="review.Rating"
+                [isReadOnly]="true">
+              </app-star-rating>
+              <span class="rating-value">{{ review.Rating }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="review-text"></div>
+      </div>
+    </div>
+    <div class="reviews" *ngIf="profile?.Reviews?.length === 0">
+      <div class="no-reviews">No reviews yet</div>
+    </div>
+  </div>
+</div>

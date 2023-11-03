@@ -1,0 +1,27 @@
+.overlay-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay-card i {
+  font-size: 2em;
+  color: #fff;
+}
+
+.card:hover .overlay-card {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.card-img-top{
+ 
+}
