@@ -1,0 +1,75 @@
+.login-page{
+  background: url('../../../assets/movie-poster-background.jpg') no-repeat center center fixed;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh; /* Set minimum height to 100% of the viewport height */
+}
+
+.container {
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 40px;
+  width: 300px;
+  max-width: 100%; /* Allow the container to expand to full width */
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+input {
+  border: none;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+}
+
+/* Style the input on focus */
+input:focus {
+  border-color: var(--primary-color); /* Change the border color on focus */
+  outline: none; /* Remove the outline on focus (optional) */
+}
+
+i {
+  margin-right: 10px;
+}
+
+.login-button {
+  background-color: #343a40;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Style Font Awesome icons (you need to include Font Awesome in your project) */
+.fa-user, .fa-lock {
+  font-size: 18px;
+}
+
+

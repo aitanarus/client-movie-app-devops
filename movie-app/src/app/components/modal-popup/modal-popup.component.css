@@ -1,0 +1,28 @@
+::ng-deep ngb-modal-backdrop {
+    z-index: 1050 !important;
+  }
+
+  /* Custom CSS for select element */
+.custom-select {
+  position: relative;
+  appearance: none; /* Remove default arrow in some browsers */
+}
+
+.custom-select::after {
+  content: "\f107"; /* Unicode for a down-arrow (Font Awesome) */
+  font-family: "Font Awesome 6 Pro";
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/* Style the select element itself */
+.custom-select select {
+  padding-right: 25px; /* Adjust to your preferred spacing */
+}
+
+.form-control{
+  margin-bottom: 15px;
+}
