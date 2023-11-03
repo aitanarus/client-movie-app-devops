@@ -1,0 +1,51 @@
+:root {
+    --font-family: "Arial", sans-serif;
+    --primary-color: #1e1e1e;
+    --primary-hover-color: #0056b3;
+  }
+  
+  body {
+    font-family: var(--font-family);
+    user-select: none;
+  }
+
+  
+  /* Custom Navbar Styles */
+  .navbar {
+    background-color: var(--primary-color);
+    color: #fff;
+  }
+  
+  .navbar-brand {
+    font-size: 1.5rem;
+  }
+  
+  .navbar-toggler-icon {
+    color: #fff;
+  }
+  
+  .nav-item {
+    margin: 0 10px;
+    cursor: pointer;
+  }
+  
+  .nav-link {
+    color: #fff;
+    font-weight: bold;
+  }
+  
+  /* Move the search bar to the left */
+  .navbar-collapse {
+    justify-content: flex-start;
+  }
+  
+  /* Adjust the spacing for small screens */
+  @media (max-width: 768px) {
+    .navbar {
+      padding: 5px;
+    }
+  
+    .navbar-brand {
+      font-size: 1.5rem;
+    }
+  }

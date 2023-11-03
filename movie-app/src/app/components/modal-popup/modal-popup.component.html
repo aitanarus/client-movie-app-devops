@@ -1,0 +1,56 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Add movie to a list</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <!-- Dropdown for selecting values -->
+    <select
+      [(ngModel)]="selectedValue"
+      class="form-control"
+      class="form-control custom-select"
+    >
+      <option value="" disabled selected>Select a list</option>
+      <option value="option1">Option 1</option>
+      <option value="option2">Option 2</option>
+      <!-- Add more options or load them dynamically -->
+    </select>
+
+    <!-- Input for creating new value -->
+    <p>Create a new list</p>
+    <input
+      [(ngModel)]="newListName"
+      class="form-control"
+      placeholder="List Name"
+    />
+    <input
+      [(ngModel)]="newListDescription"
+      class="form-control"
+      placeholder="List Description"
+    />
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-dark"
+      (click)="modal.close('Save click')"
+    >
+      Save
+    </button>
+  </div>
+</ng-template>
+
+<button class="btn btn-outline-dark" (click)="open(content)">
+  Add to list
+</button>
+
+<hr />
+
+<pre>{{ closeResult }}</pre>
