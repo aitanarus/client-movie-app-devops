@@ -1,9 +1,6 @@
 # client-movie-app-devops
 
 Release:
-git merge develop
-git tag -a v.0.1 -m "V.0.1"
-git push --tags
-
+![image](https://github.com/aitanarus/client-movie-app-devops/assets/69812257/a600560b-afbd-4677-8a7b-0fe2c5fe1dab)
 
 https://aitanarus.github.io/client-movie-app-devops/index.html
