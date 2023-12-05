@@ -101,3 +101,29 @@ h4 {
   margin-left: 10px;
   margin-bottom: 30px;
 }
+
+/* Add these styles to make the profile picture circular, centered, and show file input on hover */
+.profile-pic-container {
+  position: relative;
+  width: 256px; /* Set your desired width and height */
+  height: 256px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative; /* Add this line to establish a new positioning context */
+}
+
+.profile-pic {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure the image covers the circular container */
+  border-radius: 50%; /* Ensure the image itself is circular */
+}
+
+
+
+
+
+

@@ -9,34 +9,18 @@ import { MovieList } from 'src/app/models/movieList';
 export class MovieListComponent {
   movieLists: MovieList[] = [
     {
+      MovieListId: '1',
       ListName: 'Action Movies',
-      ListDescription: 'Exciting action-packed films',
-      MoviesId: ['tt123456', 'tt789012', 'tt345678'],
-      UserId: 'user123',
+      ListDescription: 'A collection of action-packed movies',
+      MoviesId: ['1', '2', '3'], // Assuming movie IDs are strings
+      ProfileId: 'user1',
     },
     {
-      ListName: 'Comedy Films',
-      ListDescription: 'Hilarious comedy movies',
-      MoviesId: ['tt987654', 'tt654321'],
-      UserId: 'user456',
-    },
-    {
-      ListName: 'Drama Movies',
-      ListDescription: 'Emotional and dramatic stories',
-      MoviesId: ['tt333444', 'tt555666', 'tt777888', 'tt111222'],
-      UserId: 'user789',
-    },
-    {
-      ListName: 'Sci-Fi Collection',
-      ListDescription: 'Science fiction adventures',
-      MoviesId: ['tt999000', 'tt222333', 'tt444555', 'tt111222', 'tt777888','tt555666'],
-      UserId: 'user111',
-    },
-    {
-      ListName: 'Horror Flicks',
-      ListDescription: 'Spine-chilling horror films',
-      MoviesId: ['tt666777'],
-      UserId: 'user222',
+      MovieListId: '2',
+      ListName: 'Comedy Movies',
+      ListDescription: 'A selection of funny and entertaining movies',
+      MoviesId: ['4', '5', '6'], // Assuming movie IDs are strings
+      ProfileId: 'user2',
     },
   ];
 }

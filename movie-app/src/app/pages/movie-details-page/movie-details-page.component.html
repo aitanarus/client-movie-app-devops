@@ -96,7 +96,7 @@
       <div class="review" *ngFor="let review of movie.Reviews">
         <div class="review-details">
           <div class="review-left">
-            <div class="author">{{ review.Author }}</div>
+            <div class="author">{{ review.AuthorName }}</div>
             <div class="author_dt">
               {{ review.PublishedOn | date : "dd-MMM-YYYY" }}
             </div>

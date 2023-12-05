@@ -2,16 +2,16 @@
   <div class="container">
     <div class="login-box">
       <h2>Log In</h2>
-      <form>
-        <div class="input-container">
+      <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+        <div class="input-container" [ngClass]="{'invalid-input': !usernameValid}">
           <i class="fas fa-user"></i>
-          <input type="text" placeholder="Username" />
+          <input type="text" placeholder="Username" [(ngModel)]="username" name="username" required />
         </div>
-        <div class="input-container">
+        <div class="input-container" [ngClass]="{'invalid-input': !passwordValid}">
           <i class="fas fa-lock"></i>
-          <input type="password" placeholder="Password" />
+          <input type="password" placeholder="Password" [(ngModel)]="password" name="password" required />
         </div>
-        <button class="btn btn-dark" class="login-button">Log In</button>
+        <button class="btn btn-dark login-button" type="submit">Log In</button>
       </form>
     </div>
   </div>
