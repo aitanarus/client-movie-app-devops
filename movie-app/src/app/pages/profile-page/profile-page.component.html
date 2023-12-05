@@ -2,13 +2,37 @@
   <div class="top">
     <div class="left">
       <div class="cover">
-        <img
-          src="../assets/icons/user.png"
-          alt="Profile icon"
-          width="256"
-          height="256"
+        <div class="profile-pic-container">
+          <ng-container *ngIf="profile.Picture; else defaultPic">
+            <!-- Display profile picture if it exists -->
+            <img
+              [src]="profile.Picture"
+              alt="Profile Picture"
+              class="profile-pic"
+              width="256"
+              height="256"
+            />
+          </ng-container>
+
+          <ng-template #defaultPic>
+            <img
+              src="../assets/icons/user.png"
+              alt="Default Profile Picture"
+              class="profile-pic"
+              width="256"
+              height="256"
+            />
+          </ng-template>
+        </div>
+        <!-- File input -->
+        <input
+          type="file"
+          (change)="onFileSelected($event)"
+          accept="image/*"
+          class='file-input-hidden'
         />
-        <h3 class="username">@{{ profile.User.Username }}</h3>
+
+        <h3 class="username">@{{ user?.Username }}</h3>
       </div>
     </div>
     <div class="right">
@@ -49,9 +73,7 @@
           </div>
           <div class="review-right">
             <div class="rating">
-              <app-star-rating
-                [rating]="review.Rating"
-                [isReadOnly]="true">
+              <app-star-rating [rating]="review.Rating" [isReadOnly]="true">
               </app-star-rating>
               <span class="rating-value">{{ review.Rating }}</span>
             </div>
