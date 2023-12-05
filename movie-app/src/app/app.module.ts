@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -15,7 +16,6 @@ import { ProfilePageComponent } from './pages/profile-page/profile-page.componen
 import { ModalPopupComponent } from './components/modal-popup/modal-popup.component';
 import { MovieListComponent } from './components/movie-list/movie-list.component';
 import { SignUpPageComponent } from './pages/sign-up-page/sign-up-page.component';
-
 
 @NgModule({
   declarations: [
@@ -35,9 +35,13 @@ import { SignUpPageComponent } from './pages/sign-up-page/sign-up-page.component
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-center',
+    }),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
