@@ -4,7 +4,6 @@ import {
   Observable,
   catchError,
   map,
-  retry,
   throwError,
 } from 'rxjs';
 import { User } from '../models/user';
@@ -14,7 +13,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'your_backend_auth_api_url';
+  private apiUrl = 'http://localhost:8080/api/auth';
 
   private isUserLoggedIn: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
@@ -28,7 +27,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string): Observable<any> {
+  public login(username: string, password: string): Observable<any> {
     const loginData = { username, password };
     return this.http.post(`${this.apiUrl}/login`, loginData).pipe(
       map((response: any) => {
@@ -44,7 +43,7 @@ export class AuthService {
     );
   }
 
-  logout(): void {
+  public logout(): void {
     this.isUserLoggedIn.next(false);
     this.loggedInUser.next(undefined);
   }
