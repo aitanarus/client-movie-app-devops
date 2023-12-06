@@ -35,7 +35,8 @@ export class LogInPageComponent {
     this.authService.login(this.username, this.password).subscribe({
       next: (user: User) => {
         this.router.navigate(['/home']);
-        this.toastr.success('Login successful', 'Success');
+        this.requestResponse = 'Login successful';
+        this.toastr.success(this.requestResponse, 'Success');
       },
       error: (error: HttpErrorResponse) => {
         console.error('Login failed:', error);

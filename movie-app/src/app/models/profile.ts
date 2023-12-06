@@ -1,11 +1,10 @@
-import { MovieDetails } from "./movieDetails";
+import { MovieList } from "./movieList";
 import { Review } from "./review";
-import { User } from "./user";
 
 export interface Profile {
     ProfileId: string;
-    Picture: string;
-    FavoriteMovies: string[]; //imdbID
+    Picture: File | string;
+    MovieLists: MovieList[]; 
     Reviews: Review[];
     UserId: string;
 }

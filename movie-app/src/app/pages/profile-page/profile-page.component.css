@@ -45,11 +45,13 @@
   }
   .bottom {
     margin-top: 50px;
+    display: flex;
     .title {
       margin-bottom: 30px;
     }
     .reviews {
       width: 1000px;
+      padding-right: 30px;
       .review {
         margin-bottom: 25px;
         background-color: #f1f1f1;
@@ -121,6 +123,14 @@ h4 {
   object-fit: cover; /* Ensure the image covers the circular container */
   border-radius: 50%; /* Ensure the image itself is circular */
 }
+
+.invalid-input {
+  border-color: #f00; /* Red border color for invalid input */
+}
+
+
+
+
 
 
 
