@@ -7,20 +7,20 @@ import { MovieList } from 'src/app/models/movieList';
   styleUrls: ['./movie-list.component.css'],
 })
 export class MovieListComponent {
-  movieLists: MovieList[] = [
+   movieLists: MovieList[] = [
     {
       MovieListId: '1',
       ListName: 'Action Movies',
       ListDescription: 'A collection of action-packed movies',
-      MoviesId: ['1', '2', '3'], // Assuming movie IDs are strings
-      ProfileId: 'user1',
+      MProfileId: 'user1',
+      ImbdIds: ['1', '2', '3'], // Assuming IMDb IDs are strings
     },
     {
       MovieListId: '2',
       ListName: 'Comedy Movies',
       ListDescription: 'A selection of funny and entertaining movies',
-      MoviesId: ['4', '5', '6'], // Assuming movie IDs are strings
-      ProfileId: 'user2',
+      MProfileId: 'user2',
+      ImbdIds: ['4', '5', '6'], // Assuming IMDb IDs are strings
     },
   ];
 }

@@ -26,3 +26,7 @@
 .form-control{
   margin-bottom: 15px;
 }
+
+.invalid-input {
+  border-color: #f00; /* Red border color for invalid input */
+}

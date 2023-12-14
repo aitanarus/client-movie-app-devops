@@ -1,8 +1,16 @@
+import { ReviewService } from 'src/app/services/review.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from './../../services/auth.service';
 import { Component } from '@angular/core';
 import { Profile } from 'src/app/models/profile';
 import { User } from 'src/app/models/user';
 import { ProfileService } from 'src/app/services/profile.service';
+import { ToastrService } from 'ngx-toastr';
+import { UserService } from 'src/app/services/user.service';
+import { Review } from 'src/app/models/review';
+import { Router } from '@angular/router';
+import { MovieList } from 'src/app/models/movieList';
+import { MovieListService } from 'src/app/services/movielist.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -10,35 +18,23 @@ import { ProfileService } from 'src/app/services/profile.service';
   styleUrls: ['./profile-page.component.css'],
 })
 export class ProfilePageComponent {
+  public emailValid: boolean = true;
+  public usernameValid: boolean = true;
+  public passwordValid: boolean = true;
+
   user: User | undefined;
-
-  // profile: Profile = {  // change to | undifined
-  //   ProfileId: '1',
-  //   Picture: 'path/to/profile-picture.jpg',
-  //   FavoriteMovies: ['tt1234567', 'tt9876543'],
-  //   Reviews: [
-  //     {
-  //       ReviewId: 'r1',
-  //       imdbID: 'tt1234567',
-  //       AuthorName: 'John Doe',
-  //       MovieTitle: 'Sample Movie 1',
-  //       ReviewTitle: 'Great Movie!',
-  //       Review: 'This movie was fantastic. I highly recommend it.',
-  //       Rating: 4.5,
-  //       PublishedOn: new Date(),
-  //       ProfileId: '1',
-  //     },
-  //     // Add more reviews as needed
-  //   ],
-  //   UserId: 'user123',
-  // };
-
   profile: Profile | undefined;
   requestResponse: string | undefined;
 
   constructor(
     private profileService: ProfileService,
-    private authService: AuthService
+    private userService: UserService,
+    private reviewService: ReviewService,
+    private authService: AuthService,
+    private toastr: ToastrService,
+    private modalService: NgbModal,
+    private router: Router,
+    private movieListService: MovieListService
   ) {}
 
   public ngOnInit(): void {
@@ -53,7 +49,7 @@ export class ProfilePageComponent {
   }
 
   public getProfile(): void {
-    this.profileService.getProfile().subscribe(
+    this.profileService.getProfile(this.user?.UserId).subscribe(
       (profile) => {
         console.log('Profile retrieved successfully:', profile);
         this.profile = profile;
@@ -65,37 +61,123 @@ export class ProfilePageComponent {
     );
   }
 
-  public updateProfile(): void {
-    if (this.profile) {
-      this.profileService.updateProfile(this.profile).subscribe(
-        (updatedProfile) => {
-          console.log('Profile updated successfully:', updatedProfile);
-          this.profile = updatedProfile;
+  public updateUser(): void {
+    this.resetValidation();
+    this.validateForm();
+
+    if (this.user) {
+      this.userService.updateUser(this.user).subscribe(
+        (updatedUser) => {
+          console.log('User updated successfully:', updatedUser);
+          this.user = updatedUser;
+          this.requestResponse = 'User updated successfully';
+          this.toastr.success(this.requestResponse, 'Success');
+        },
+        (error) => {
+          console.error('Error updating user:', error);
+          this.requestResponse = 'Error updating user';
+          this.toastr.error(this.requestResponse, 'Error');
+        }
+      );
+    }
+
+    if (this.user) {
+      this.userService.updateUser(this.user).subscribe(
+        (updatedUser) => {
+          console.log('Profile updated successfully:', updatedUser);
+          this.user = updatedUser;
           this.requestResponse = 'Profile updated successfully';
+          this.toastr.success(this.requestResponse, 'Success');
         },
         (error) => {
           console.error('Error updating profile:', error);
-          this.requestResponse = error;
+          this.requestResponse = 'Error updating profile';
+          this.toastr.error(this.requestResponse, 'Error');
         }
       );
     }
   }
 
-  public deleteProfile(): void {
-    this.profileService.deleteProfile().subscribe(
+  public deleteUser(): void {
+    this.userService.deleteUser(this.user!.UserId).subscribe(
       () => {
-        console.log('Profile deleted successfully');
-        //this.profile = undefined;
-        this.requestResponse = 'Profile deleted successfully';
+        console.log('User deleted successfully');
+        this.authService.logout();
+        this.requestResponse = 'User deleted successfully';
+        this.toastr.success(this.requestResponse, 'Success');
+        this.router.navigate(['/home']);
       },
       (error) => {
-        console.error('Error deleting profile:', error);
-        this.requestResponse = error;
+        console.error('Error deleting user:', error);
+        this.requestResponse = 'Error deleting profile';
+        this.toastr.error(this.requestResponse, 'Error');
       }
     );
   }
 
-  onFileSelected($event: Event) {
-    throw new Error('Method not implemented.');
+  public onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (this.profile) {
+      this.profile.Picture = file;
+    }
+  }
+
+  public openConfirmationModal(content: any): void {
+    this.modalService.open(content, { centered: true });
+  }
+
+  private resetValidation(): void {
+    this.emailValid = true;
+    this.usernameValid = true;
+    this.passwordValid = true;
+  }
+
+  private validateForm(): void {
+    const passwordRegex: RegExp =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (this.user) {
+      if (!this.user.Email) {
+        this.emailValid = false;
+      }
+
+      if (!this.user.Username) {
+        this.usernameValid = false;
+      }
+
+      if (!this.user.Password || !passwordRegex.test(this.user.Password)) {
+        this.passwordValid = false;
+      }
+    }
+  }
+
+  public deleteReview(review: Review): void {
+    this.reviewService.deleteReview(review.ReviewId).subscribe(
+      () => {
+        console.log('Review deleted successfully');
+        this.requestResponse = 'Review deleted successfully';
+        this.toastr.success(this.requestResponse, 'Success');
+        this.ngOnInit();
+      },
+      (error) => {
+        console.error('Error deleting review:', error);
+      }
+    );
+  }
+
+  public deleteMovieList(movieList: MovieList): void {
+    this.movieListService.deleteMovieList(movieList.MovieListId).subscribe(
+      () => {
+        console.log('Movie list deleted successfully');
+        this.requestResponse = 'Movie list deleted successfully';
+        this.toastr.success(this.requestResponse, 'Success');
+      },
+      (error) => {
+        console.error('Error deleting movie list:', error);
+      }
+    );
+  }
+
+  public viewMovieList(listId: string): void {
+    this.router.navigate(['/movieList', listId]);
   }
 }

@@ -2,7 +2,7 @@
   <div class="top">
     <div class="left">
       <div class="heart-icon">
-        <app-modal-popup class="list-button"></app-modal-popup>
+        <app-modal-popup #modalPopup class="list-button"></app-modal-popup>
       </div>
       <div class="favourite mb-4">
         <div class="name">{{ movie.Title }}</div>
@@ -35,23 +35,39 @@
       <div class="rating-form">
         <div class="form-group">
           <label for="uname">Title</label>
-          <input type="text" name="uname" class="form-control" />
+          <input type="text" name="uname" class="form-control" [(ngModel)]="title"/>
         </div>
         <div class="form-group">
           <label for="rating">Rating</label>
           <div class="rating">
-            <app-star-rating
-              [rating]="0"
-              [isReadOnly]="false"
-            ></app-star-rating>
+            <ng-template #t let-fill="fill">
+              <span class="star" [class.full]="fill === 100">
+                <span class="half" [style.width.%]="fill">&hearts;</span
+                >&hearts;
+              </span>
+            </ng-template>
+            
+            <ngb-rating
+            [rate]="rating"
+            [starTemplate]="t"
+            [readonly]="isReadOnly"
+            [max]="5"
+            (rateChange)="onRateChange($event)"
+          ></ngb-rating>
           </div>
         </div>
         <div class="form-group">
           <label for="review">Review</label>
-          <textarea name="review" rows="3" class="form-control"></textarea>
+          <textarea name="review" rows="3" class="form-control" [(ngModel)]="reviewText"></textarea>
         </div>
         <div class="btn-container">
-          <button class="btn btn-dark">Submit</button>
+          <button 
+          class="btn btn-dark"
+          type="button"
+          (click)="createReview();"
+          >
+          Submit
+        </button>
         </div>
       </div>
 
@@ -96,10 +112,15 @@
       <div class="review" *ngFor="let review of movie.Reviews">
         <div class="review-details">
           <div class="review-left">
-            <div class="author">{{ review.AuthorName }}</div>
-            <div class="author_dt">
-              {{ review.PublishedOn | date : "dd-MMM-YYYY" }}
-            </div>
+            <div class="author">@{{ review.Author }}</div>
+            <div class="author">{{ review.MovieTitle }}</div>
+              <div class="">{{ review.ReviewTitle }}</div>
+              <div class="mt-2">
+                {{ review.ReviewText }}
+              </div>
+              <div class="author_dt mt-2">
+                {{ review.PublishedOn | date : "dd-MMM-YYYY" }}
+              </div>
           </div>
           <div class="review-right">
             <div class="rating">
