@@ -17,7 +17,7 @@ export class HomePageComponent {
 
   constructor(private movieService: MovieService, private router: Router) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
       this.movieService.getPopularMovies().subscribe(
         (data: any) => {
           this.popularMovies = data.slice(0, 6);
@@ -37,7 +37,7 @@ export class HomePageComponent {
       );
   }
 
-  searchMovies() {
+  public searchMovies() {
     if (this.searchQuery) {
       this.movieService.searchMovies(this.searchQuery).subscribe(
         (data: any) => {
@@ -50,7 +50,7 @@ export class HomePageComponent {
     }
   }
 
-  viewDetails(movieId: string) {
+  public viewDetails(movieId: string) {
     this.router.navigate(['/movie', movieId]);
   }
 }

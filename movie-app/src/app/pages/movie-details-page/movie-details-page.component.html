@@ -40,7 +40,20 @@
         <div class="form-group">
           <label for="rating">Rating</label>
           <div class="rating">
-            <app-star-rating [rating]="rating" [isReadOnly]="false" (ratingChange)="onRatingChanged($event)"></app-star-rating>
+            <ng-template #t let-fill="fill">
+              <span class="star" [class.full]="fill === 100">
+                <span class="half" [style.width.%]="fill">&hearts;</span
+                >&hearts;
+              </span>
+            </ng-template>
+            
+            <ngb-rating
+            [rate]="rating"
+            [starTemplate]="t"
+            [readonly]="isReadOnly"
+            [max]="5"
+            (rateChange)="onRateChange($event)"
+          ></ngb-rating>
           </div>
         </div>
         <div class="form-group">
@@ -99,10 +112,15 @@
       <div class="review" *ngFor="let review of movie.Reviews">
         <div class="review-details">
           <div class="review-left">
-            <div class="author">{{ review.Author }}</div>
-            <div class="author_dt">
-              {{ review.PublishedOn | date : "dd-MMM-YYYY" }}
-            </div>
+            <div class="author">@{{ review.Author }}</div>
+            <div class="author">{{ review.MovieTitle }}</div>
+              <div class="">{{ review.ReviewTitle }}</div>
+              <div class="mt-2">
+                {{ review.ReviewText }}
+              </div>
+              <div class="author_dt mt-2">
+                {{ review.PublishedOn | date : "dd-MMM-YYYY" }}
+              </div>
           </div>
           <div class="review-right">
             <div class="rating">

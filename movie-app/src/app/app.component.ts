@@ -17,16 +17,14 @@ export class AppComponent {
   constructor(private authService: AuthService) {}
 
   public ngOnInit(): void {
-    this.getLoggedInUser();
+    this.authService.loggedInUser$.subscribe((user) => {
+      this.user = user;
+      console.error("logged in user", this.user);
+    });
+    console.error("logged in user",this.user);
   }
 
-  public getLoggedInUser(): void {
-    this.authService.loggedInUser$.subscribe((user) => {
-      console.log(user === null);
-      console.log(user?.Email);
-      console.log(user?.UserId);
-      console.log(user?.Username);
-      this.user = user;
-    });
+  public logOut(): void{
+    this.authService.logout();
   }
 }

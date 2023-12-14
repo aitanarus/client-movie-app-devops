@@ -14,33 +14,34 @@ import { Profile } from 'src/app/models/profile';
 @Component({
   selector: 'app-movie-details-page',
   templateUrl: './movie-details-page.component.html',
-  styleUrls: ['./movie-details-page.component.css']
+  styleUrls: ['./movie-details-page.component.css'],
 })
 export class MovieDetailsPageComponent {
   private movieId?: string;
   public movie?: MovieDetails;
-  title: string = '';
-  rating: number = 0;
-  reviewText: string = '';
+  public title: string = '';
+  public rating: number = 0;
+  public isReadOnly: boolean = false;
+  public reviewText: string = '';
   @ViewChild('popupModal') popupModal!: ModalPopupComponent;
 
   user: User | undefined;
   profile: Profile | undefined;
   requestResponse: string | undefined;
-  
+
   constructor(
     private profileService: ProfileService,
     private authService: AuthService,
-    private movieService: MovieService, 
+    private movieService: MovieService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private reviewService: ReviewService
-    ) { }
+  ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.getLoggedInUser();
     this.getProfile();
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       this.movieId = params['id'];
     });
 
@@ -48,10 +49,16 @@ export class MovieDetailsPageComponent {
       this.movieService.getMovieDetails(this.movieId).subscribe(
         (data: any) => {
           this.movie = data[0] as MovieDetails;
-          console.error(this.movie.Ratings)
+          console.error(this.movie.Ratings);
         },
-        (error) => {
-        }
+        (error) => {}
+      );
+
+      this.reviewService.getReviewsByMovieId(this.movieId).subscribe(
+        (data: any) => {
+          this.movie!.Reviews = [...data];
+        },
+        (error) => {}
       );
     }
   }
@@ -65,7 +72,6 @@ export class MovieDetailsPageComponent {
   public getProfile(): void {
     this.profileService.getProfile(this.user?.UserId).subscribe(
       (profile) => {
-        console.log('Profile retrieved successfully:', profile);
         this.profile = profile;
       },
       (error) => {
@@ -74,39 +80,43 @@ export class MovieDetailsPageComponent {
       }
     );
   }
-  onRatingChanged(newRating: number): void {
-    // Log the new rating to check if this method is called
-    console.log('New Rating:', newRating);
 
-    // Assign the new rating to a component property if needed
-    this.rating = newRating;
+  public onRateChange(newRating: number) {
+    if (this.rating === undefined) {
+      this.rating = 0;
+    } else {
+      this.rating = newRating;
+    }
   }
-  createReview(): void {
-    const review: Review = {
-      ReviewId:"",
-      ReviewTitle: this.title,
-      Rating: this.rating,
-      ReviewText: this.reviewText,
-      ImdbID: this.movieId?.toString()!,
-      MovieTitle: "",
-      PublishedOn: new Date(),
-      RProfileId: this.profile?.ProfileId!,
-      Author: this.user?.Username!
 
-      // Include other properties as needed
-    };
+  public createReview(): void {
+    if (this.movie) {
+      const review: Review = {
+        ReviewId: '',
+        ReviewTitle: this.title,
+        Rating: this.rating,
+        ReviewText: this.reviewText,
+        ImdbID: this.movieId?.toString()!,
+        MovieTitle: this.movie?.Title,
+        PublishedOn: new Date(),
+        RProfileId: this.profile?.ProfileId!,
+        Author: this.user?.Username!,
 
-    this.reviewService.createReview(review).subscribe(
-      (createdReview) => {
-        console.log('Review created successfully:', createdReview);
-        // Handle success, e.g., update UI or show a success message
-        this.toastr.success('Review created successfully', 'Success');
-      },
-      (error) => {
-        console.error('Error creating review:', error);
-        // Handle error, e.g., show an error message
-        this.toastr.error('Error creating review', 'Error');
-      }
-    );
+        // Include other properties as needed
+      };
+
+      this.reviewService.createReview(review).subscribe(
+        (createdReview) => {
+          console.log('Review created successfully:', createdReview);
+          // Handle success, e.g., update UI or show a success message
+          this.toastr.success('Review created successfully', 'Success');
+        },
+        (error) => {
+          console.error('Error creating review:', error);
+          // Handle error, e.g., show an error message
+          this.toastr.error('Error creating review', 'Error');
+        }
+      );
+    }
   }
 }

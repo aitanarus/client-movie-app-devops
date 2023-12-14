@@ -77,19 +77,19 @@
         <div class="btn-container">
           <button
             class="btn btn-dark"
-            (click)="openConfirmationModal(updateConfirmation)"
+            (click)="openConfirmationModal(updateUserConfirmation)"
           >
             Submit
           </button>
           <button
             class="btn btn-danger ml-2"
-            (click)="openConfirmationModal(deleteConfirmation)"
+            (click)="openConfirmationModal(deleteUserConfirmation)"
           >
             Delete
           </button>
         </div>
 
-        <ng-template #updateConfirmation let-modal>
+        <ng-template #updateUserConfirmation let-modal>
           <div class="modal-header">
             <h4 class="modal-title">Confirmation</h4>
             <button
@@ -122,7 +122,7 @@
           </div>
         </ng-template>
 
-        <ng-template #deleteConfirmation let-modal>
+        <ng-template #deleteUserConfirmation let-modal>
           <div class="modal-header">
             <h4 class="modal-title">Confirmation</h4>
             <button
@@ -160,12 +160,15 @@
   <div class="bottom">
     <div class="left">
       <div class="vl mb-4"><h4 class="title">Reviews</h4></div>
-      <div class="reviews" *ngIf="profile && profile.Reviews && profile.Reviews.length > 0">
+      <div
+        class="reviews"
+        *ngIf="profile && profile.Reviews && profile.Reviews.length > 0"
+      >
         <div class="review" *ngFor="let review of profile?.Reviews">
           <div class="review-details">
             <div class="review-left">
-              <div class="author">Movie: {{ review.MovieTitle }}</div>
-              <div class="author">{{ review.ReviewTitle }}</div>
+              <div class="author">{{ review.MovieTitle }}</div>
+              <div class="">{{ review.ReviewTitle }}</div>
               <div class="mt-2">
                 {{ review.ReviewText }}
               </div>
@@ -178,13 +181,51 @@
                 <app-star-rating [rating]="review.Rating" [isReadOnly]="true">
                 </app-star-rating>
                 <span class="rating-value">{{ review.Rating }}</span>
+                <button class="btn" (click)="openConfirmationModal(deleteReviewConfirmation)">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+                <ng-template #deleteReviewConfirmation let-modal>
+                  <div class="modal-header">
+                    <h4 class="modal-title">Confirmation</h4>
+                    <button
+                      type="button"
+                      class="close"
+                      aria-label="Close"
+                      (click)="modal.dismiss('Cross click')"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    Are you sure you want to delete your review?
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      (click)="modal.dismiss('Cancel')"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      (click)="deleteReview(review); modal.close('Confirm')"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </ng-template>
               </div>
             </div>
           </div>
           <div class="review-text"></div>
         </div>
       </div>
-      <div class="reviews" *ngIf="!profile || !profile.Reviews || profile.Reviews.length === 0">
+      <div
+        class="reviews"
+        *ngIf="!profile || !profile.Reviews || profile.Reviews.length === 0"
+      >
         <div class="no-reviews">No reviews yet</div>
       </div>
     </div>

@@ -1,3 +1,4 @@
+import { ReviewService } from 'src/app/services/review.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from './../../services/auth.service';
 import { Component } from '@angular/core';
@@ -6,6 +7,8 @@ import { User } from 'src/app/models/user';
 import { ProfileService } from 'src/app/services/profile.service';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/services/user.service';
+import { Review } from 'src/app/models/review';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile-page',
@@ -24,9 +27,11 @@ export class ProfilePageComponent {
   constructor(
     private profileService: ProfileService,
     private userService: UserService,
+    private reviewService: ReviewService,
     private authService: AuthService,
     private toastr: ToastrService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private router: Router
   ) {}
 
   public ngOnInit(): void {
@@ -94,14 +99,14 @@ export class ProfilePageComponent {
     this.userService.deleteUser(this.user!.UserId).subscribe(
       () => {
         console.log('User deleted successfully');
-        this.user = undefined;
-        this.profile = undefined;
+        this.authService.logout();
         this.requestResponse = 'User deleted successfully';
         this.toastr.success(this.requestResponse, 'Success');
+        this.router.navigate(['/home']);
       },
       (error) => {
         console.error('Error deleting user:', error);
-        this.requestResponse = 'Error deleting user';
+        this.requestResponse = 'Error deleting profile';
         this.toastr.error(this.requestResponse, 'Error');
       }
     );
@@ -140,5 +145,19 @@ export class ProfilePageComponent {
         this.passwordValid = false;
       }
     }
+  }
+
+  public deleteReview(review: Review): void {
+    this.reviewService.deleteReview(review.ReviewId).subscribe(
+      () => {
+        console.log('Review deleted successfully');
+        this.requestResponse = 'Review deleted successfully';
+        this.toastr.success(this.requestResponse, 'Success');
+        this.ngOnInit();
+      },
+      (error) => {
+        console.error('Error deleting review:', error);
+      }
+    );
   }
 }
