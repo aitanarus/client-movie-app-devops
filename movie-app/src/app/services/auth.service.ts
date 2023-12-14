@@ -31,7 +31,13 @@ export class AuthService {
     const loginData = { username, password };
     return this.http.post(`${this.apiUrl}/login`, loginData).pipe(
       map((response: any) => {
-        const user: User = response.user;
+        const user: User = 
+        {
+          UserId :response.userId,
+          Username:response.username,
+          Password:response.password,
+          Email:response.email
+        };
         this.isUserLoggedIn.next(true);
         this.loggedInUser.next(user);
         return user;

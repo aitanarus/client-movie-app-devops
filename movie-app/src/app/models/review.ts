@@ -1,11 +1,11 @@
 export interface Review {
   ReviewId: string;
-  imdbID: string;
-  AuthorName: string;
+  ImdbID: string;
+  Author: string;
   MovieTitle: string;
   ReviewTitle:string;
-  Review: string;
+  ReviewText: string;
   Rating: number;
   PublishedOn: Date;
-  ProfileId: string;
+  RProfileId: string;
 }

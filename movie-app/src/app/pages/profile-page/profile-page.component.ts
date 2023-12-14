@@ -53,21 +53,21 @@ export class ProfilePageComponent {
     );
   }
 
-  public updateUserProfile(): void {
+  public updateUser(): void {
     this.resetValidation();
     this.validateForm();
 
-    if (this.profile) {
-      this.profileService.updateProfile(this.profile).subscribe(
-        (updatedProfile) => {
-          console.log('Profile updated successfully:', updatedProfile);
-          this.profile = updatedProfile;
-          this.requestResponse = 'Profile updated successfully';
+    if (this.user) {
+      this.userService.updateUser(this.user).subscribe(
+        (updatedUser) => {
+          console.log('User updated successfully:', updatedUser);
+          this.user = updatedUser;
+          this.requestResponse = 'User updated successfully';
           this.toastr.success(this.requestResponse, 'Success');
         },
         (error) => {
-          console.error('Error updating profile:', error);
-          this.requestResponse = 'Error updating profile';
+          console.error('Error updating user:', error);
+          this.requestResponse = 'Error updating user';
           this.toastr.error(this.requestResponse, 'Error');
         }
       );
@@ -90,36 +90,21 @@ export class ProfilePageComponent {
     }
   }
 
-  public deleteUserProfile(): void {
-    this.profileService.deleteProfile(this.profile?.ProfileId).subscribe(
+  public deleteUser(): void {
+    this.userService.deleteUser(this.user!.UserId).subscribe(
       () => {
-        console.log('Profile deleted successfully');
+        console.log('User deleted successfully');
+        this.user = undefined;
         this.profile = undefined;
-        this.requestResponse = 'Profile deleted successfully';
+        this.requestResponse = 'User deleted successfully';
         this.toastr.success(this.requestResponse, 'Success');
       },
       (error) => {
-        console.error('Error deleting profile:', error);
-        this.requestResponse = 'Error deleting profile';
+        console.error('Error deleting user:', error);
+        this.requestResponse = 'Error deleting user';
         this.toastr.error(this.requestResponse, 'Error');
       }
     );
-
-    if (this.user) {
-      this.userService.updateUser(this.user).subscribe(
-        (updatedUser) => {
-          console.log('Profile updated successfully:', updatedUser);
-          this.user = updatedUser;
-          this.requestResponse = 'Profile updated successfully';
-          this.toastr.success(this.requestResponse, 'Success');
-        },
-        (error) => {
-          console.error('Error updating profile:', error);
-          this.requestResponse = 'Error updating profile';
-          this.toastr.error(this.requestResponse, 'Error');
-        }
-      );
-    }
   }
 
   public onFileSelected(event: any) {
