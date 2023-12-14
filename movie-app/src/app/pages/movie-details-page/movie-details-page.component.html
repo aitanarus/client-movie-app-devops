@@ -35,23 +35,26 @@
       <div class="rating-form">
         <div class="form-group">
           <label for="uname">Title</label>
-          <input type="text" name="uname" class="form-control" />
+          <input type="text" name="uname" class="form-control" [(ngModel)]="title"/>
         </div>
         <div class="form-group">
           <label for="rating">Rating</label>
           <div class="rating">
-            <app-star-rating
-              [rating]="0"
-              [isReadOnly]="false"
-            ></app-star-rating>
+            <app-star-rating [rating]="rating" [isReadOnly]="false" (ratingChange)="onRatingChanged($event)"></app-star-rating>
           </div>
         </div>
         <div class="form-group">
           <label for="review">Review</label>
-          <textarea name="review" rows="3" class="form-control"></textarea>
+          <textarea name="review" rows="3" class="form-control" [(ngModel)]="reviewText"></textarea>
         </div>
         <div class="btn-container">
-          <button class="btn btn-dark">Submit</button>
+          <button 
+          class="btn btn-dark"
+          type="button"
+          (click)="createReview();"
+          >
+          Submit
+        </button>
         </div>
       </div>
 
@@ -96,7 +99,7 @@
       <div class="review" *ngFor="let review of movie.Reviews">
         <div class="review-details">
           <div class="review-left">
-            <div class="author">{{ review.AuthorName }}</div>
+            <div class="author">{{ review.Author }}</div>
             <div class="author_dt">
               {{ review.PublishedOn | date : "dd-MMM-YYYY" }}
             </div>

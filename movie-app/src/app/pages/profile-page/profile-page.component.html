@@ -115,7 +115,7 @@
             <button
               type="button"
               class="btn btn-primary"
-              (click)="updateUserProfile(); modal.close('Confirm')"
+              (click)="updateUser(); modal.close('Confirm')"
             >
               Update
             </button>
@@ -148,7 +148,7 @@
             <button
               type="button"
               class="btn btn-danger"
-              (click)="deleteUserProfile(); modal.close('Confirm')"
+              (click)="deleteUser(); modal.close('Confirm')"
             >
               Delete
             </button>
@@ -160,14 +160,14 @@
   <div class="bottom">
     <div class="left">
       <div class="vl mb-4"><h4 class="title">Reviews</h4></div>
-      <div class="reviews" *ngIf="profile.Reviews.length > 0">
+      <div class="reviews" *ngIf="profile && profile.Reviews && profile.Reviews.length > 0">
         <div class="review" *ngFor="let review of profile?.Reviews">
           <div class="review-details">
             <div class="review-left">
               <div class="author">Movie: {{ review.MovieTitle }}</div>
               <div class="author">{{ review.ReviewTitle }}</div>
               <div class="mt-2">
-                {{ review.Review }}
+                {{ review.ReviewText }}
               </div>
               <div class="author_dt mt-2">
                 {{ review.PublishedOn | date : "dd-MMM-YYYY" }}
@@ -184,7 +184,7 @@
           <div class="review-text"></div>
         </div>
       </div>
-      <div class="reviews" *ngIf="profile?.Reviews?.length === 0">
+      <div class="reviews" *ngIf="!profile || !profile.Reviews || profile.Reviews.length === 0">
         <div class="no-reviews">No reviews yet</div>
       </div>
     </div>

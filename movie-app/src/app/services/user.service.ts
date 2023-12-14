@@ -17,9 +17,15 @@ export class UserService {
     password: string
   ): Observable<any> {
     const signupData = { email, username, password };
-    return this.http.post(`${this.apiUrl}/auth/signup`, signupData).pipe(
+    return this.http.post(`${this.apiUrl}/users/signup`, signupData).pipe(
       map((response: any) => {
-        const user: User = response.user;
+        console.log(response);
+        const user: User = {
+          UserId: response.userId,
+          Username: response.username,
+          Password: response.password,
+          Email: response.email
+        };
         return user;
       }),
       catchError((error: HttpErrorResponse) => {

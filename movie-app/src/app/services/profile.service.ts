@@ -12,9 +12,17 @@ export class ProfileService {
   constructor(private http: HttpClient) {}
 
   public getProfile(userId: string | undefined): Observable<Profile> {
+    console.log(userId);
     return this.http.get<Profile>(`${this.apiUrl}/profiles/${userId}`).pipe(
       map((response: any) => {
-        const profile: Profile = response.profile;
+        const profile: Profile = 
+        {
+          ProfileId:response.profileId,
+          Picture:response.Picture,
+          MovieLists:response.MovieLists,
+          Reviews:response.Reviews,
+          UserId:response.userId
+        };
         return profile;
       }),
       catchError((error: HttpErrorResponse) => {
