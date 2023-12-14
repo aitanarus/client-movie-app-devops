@@ -1,25 +1,20 @@
 import { Injectable } from '@angular/core';
-import {
-  BehaviorSubject,
-  Observable,
-  catchError,
-  map,
-  throwError,
-} from 'rxjs';
-import { User } from '../models/user';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { User } from '../models/user';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/auth';
+  private apiUrl = 'https://movie-app-backend-cloud-nbdw6ogija-ew.a.run.app/api/auth';
 
   private isUserLoggedIn: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
-  private loggedInUser: BehaviorSubject<User | undefined> = new BehaviorSubject<
-    User | undefined
-  >(undefined);
+  private loggedInUser: BehaviorSubject<User | undefined> = new BehaviorSubject<User | undefined>(
+    JSON.parse(localStorage.getItem('user') || 'null')
+  );
 
   isLoggedIn$: Observable<boolean> = this.isUserLoggedIn.asObservable();
   loggedInUser$: Observable<User | undefined> =
@@ -33,11 +28,14 @@ export class AuthService {
       map((response: any) => {
         const user: User = 
         {
-          UserId :response.userId,
-          Username:response.username,
-          Password:response.password,
-          Email:response.email
+          UserId: response.userId,
+          Username: response.username,
+          Password: response.password,
+          Email: response.email
         };
+
+        localStorage.setItem('user', JSON.stringify(user));
+
         this.isUserLoggedIn.next(true);
         this.loggedInUser.next(user);
         return user;
@@ -50,6 +48,8 @@ export class AuthService {
   }
 
   public logout(): void {
+    localStorage.removeItem('user');
+
     this.isUserLoggedIn.next(false);
     this.loggedInUser.next(undefined);
   }

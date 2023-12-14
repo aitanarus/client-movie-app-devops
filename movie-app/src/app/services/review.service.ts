@@ -7,11 +7,12 @@ import { Review } from '../models/review';
   providedIn: 'root',
 })
 export class ReviewService {
-  private apiUrl = 'http://localhost:8080/api/reviews';
+  private apiUrl =
+    'https://movie-app-backend-cloud-nbdw6ogija-ew.a.run.app/api/reviews';
 
   constructor(private http: HttpClient) {}
 
-  createReview(review: Review): Observable<Review> {
+  public createReview(review: Review): Observable<Review> {
     return this.http.post(this.apiUrl, review).pipe(
       map((response: any) => {
         const createdReview: Review = {
@@ -23,7 +24,7 @@ export class ReviewService {
           ReviewText: response.Review,
           Rating: response.Rating,
           PublishedOn: response.PublishedOn,
-          RProfileId: response.ProfileId
+          RProfileId: response.ProfileId,
         };
         return createdReview;
       }),
@@ -34,7 +35,7 @@ export class ReviewService {
     );
   }
 
-  updateReview(review: Review): Observable<Review> {
+  public updateReview(review: Review): Observable<Review> {
     return this.http.put<Review>(this.apiUrl, review).pipe(
       map((response: any) => {
         const updatedReview: Review = {
@@ -46,7 +47,7 @@ export class ReviewService {
           ReviewText: response.ReviewText,
           Rating: response.Rating,
           PublishedOn: response.PublishedOn,
-          RProfileId: response.RProfileId
+          RProfileId: response.RProfileId,
         };
         return updatedReview;
       }),
@@ -57,7 +58,7 @@ export class ReviewService {
     );
   }
 
-  removeReview(reviewId: string): Observable<any> {
+  public deleteReview(reviewId: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${reviewId}`).pipe(
       map((response: any) => {
         return response;
@@ -69,7 +70,7 @@ export class ReviewService {
     );
   }
 
-  getAllReviews(): Observable<Review[]> {
+  public getAllReviews(): Observable<Review[]> {
     return this.http.get<Review[]>(this.apiUrl).pipe(
       catchError((error: HttpErrorResponse) => {
         console.error('Error retrieving all reviews:', error);
@@ -78,8 +79,13 @@ export class ReviewService {
     );
   }
 
-  getReviewByProfileId(profileId: string): Observable<Review> {
+  public getReviewByProfileId(profileId: string): Observable<Review> {
+    console.error(profileId);
     return this.http.get<Review>(`${this.apiUrl}/profile/${profileId}`).pipe(
+      map((response: any) => {
+        console.error(response);
+        return response;
+      }),
       catchError((error: HttpErrorResponse) => {
         console.error('Error retrieving review by profile ID:', error);
         return throwError(() => error);
@@ -87,8 +93,22 @@ export class ReviewService {
     );
   }
 
-  getReviewById(reviewId: string): Observable<Review> {
+  public getReviewById(reviewId: string): Observable<Review> {
     return this.http.get<Review>(`${this.apiUrl}/${reviewId}`).pipe(
+      map((response: any) => {
+        const review: Review = {
+          ReviewId: response.ReviewId,
+          ImdbID: response.ImdbID,
+          Author: response.Author,
+          MovieTitle: response.MovieTitle,
+          ReviewTitle: response.ReviewTitle,
+          ReviewText: response.ReviewText,
+          Rating: response.Rating,
+          PublishedOn: response.PublishedOn,
+          RProfileId: response.RProfileId,
+        };
+        return review;
+      }),
       catchError((error: HttpErrorResponse) => {
         console.error('Error retrieving review by ID:', error);
         return throwError(() => error);
@@ -96,40 +116,62 @@ export class ReviewService {
     );
   }
 
-  getReviewsByMovieId(imdbId: string): Observable<Review[]> {
+  public getReviewsByMovieId(imdbId: string): Observable<Review[]> {
     return this.http.get<Review[]>(`${this.apiUrl}/movie/${imdbId}`).pipe(
+      map((response: any[]) => {
+        return response.map(review => ({
+          ReviewId: review.reviewId,
+          ImdbID: review.imdbID,
+          Author: review.author,
+          MovieTitle: review.movieTitle,
+          ReviewTitle: review.reviewTitle,
+          ReviewText: review.reviewText,
+          Rating: review.rating,
+          PublishedOn: new Date(review.publishedOn),
+          RProfileId: review.rProfileId,
+        }));
+      }),
       catchError((error: HttpErrorResponse) => {
         console.error('Error retrieving reviews by movie ID:', error);
         return throwError(() => error);
       })
     );
   }
+  
 
-  getTopReviews(topReviewsCount: string, imdbId: string): Observable<Review[]> {
-    return this.http.get<Review[]>(`${this.apiUrl}/top/${topReviewsCount}/movie/${imdbId}`).pipe(
-      catchError((error: HttpErrorResponse) => {
-        console.error('Error retrieving top reviews:', error);
-        return throwError(() => error);
-      })
-    );
+  public getTopReviews(
+    topReviewsCount: string,
+    imdbId: string
+  ): Observable<Review[]> {
+    return this.http
+      .get<Review[]>(`${this.apiUrl}/top/${topReviewsCount}/movie/${imdbId}`)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error retrieving top reviews:', error);
+          return throwError(() => error);
+        })
+      );
   }
 
-  getMostReviewedMovies(topMoviesCount: number): Observable<Review[]> {
-    return this.http.get<Review[]>(`${this.apiUrl}/most-reviewed/${topMoviesCount}`).pipe(
-      catchError((error: HttpErrorResponse) => {
-        console.error('Error retrieving most reviewed movies:', error);
-        return throwError(() => error);
-      })
-    );
+  public getMostReviewedMovies(topMoviesCount: number): Observable<Review[]> {
+    return this.http
+      .get<Review[]>(`${this.apiUrl}/most-reviewed/${topMoviesCount}`)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error retrieving most reviewed movies:', error);
+          return throwError(() => error);
+        })
+      );
   }
 
-  getAverageRatingForMovie(imdbId: string): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/average-rating/movie/${imdbId}`).pipe(
-      catchError((error: HttpErrorResponse) => {
-        console.error('Error retrieving average rating for movie:', error);
-        return throwError(() => error);
-      })
-    );
+  public getAverageRatingForMovie(imdbId: string): Observable<number> {
+    return this.http
+      .get<number>(`${this.apiUrl}/average-rating/movie/${imdbId}`)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error retrieving average rating for movie:', error);
+          return throwError(() => error);
+        })
+      );
   }
 }
-

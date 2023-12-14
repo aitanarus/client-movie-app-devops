@@ -7,12 +7,11 @@ import { Profile } from '../models/profile';
   providedIn: 'root'
 })
 export class ProfileService {
-  private apiUrl = 'http://localhost:8080/api';
+  private apiUrl = 'https://movie-app-backend-cloud-nbdw6ogija-ew.a.run.app/api';
 
   constructor(private http: HttpClient) {}
 
   public getProfile(userId: string | undefined): Observable<Profile> {
-    console.log(userId);
     return this.http.get<Profile>(`${this.apiUrl}/profiles/${userId}`).pipe(
       map((response: any) => {
         const profile: Profile = 
@@ -20,9 +19,23 @@ export class ProfileService {
           ProfileId:response.profileId,
           Picture:response.Picture,
           MovieLists:response.MovieLists,
-          Reviews:response.Reviews,
+          Reviews: response.reviews.map((review: any) => {
+            // Map each review item in the array
+            return {
+              ReviewId: review.reviewId,
+              ImdbID: review.imdbID,
+              Author: review.author,
+              MovieTitle: review.movieTitle,
+              ReviewTitle: review.reviewTitle,
+              ReviewText: review.reviewText,
+              Rating: review.rating,
+              PublishedOn: new Date(review.publishedOn),
+              RProfileId: review.rProfileId,
+            };
+          }),
           UserId:response.userId
         };
+        console.error("get profile", profile);
         return profile;
       }),
       catchError((error: HttpErrorResponse) => {

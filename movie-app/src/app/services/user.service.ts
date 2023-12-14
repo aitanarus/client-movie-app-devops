@@ -7,7 +7,7 @@ import { User } from '../models/user';
   providedIn: 'root',
 })
 export class UserService {
-  private apiUrl = 'http://localhost:8080/api';
+  private apiUrl = 'https://movie-app-backend-cloud-nbdw6ogija-ew.a.run.app/api';
 
   constructor(private http: HttpClient) {}
 
@@ -19,7 +19,6 @@ export class UserService {
     const signupData = { email, username, password };
     return this.http.post(`${this.apiUrl}/users/signup`, signupData).pipe(
       map((response: any) => {
-        console.log(response);
         const user: User = {
           UserId: response.userId,
           Username: response.username,
