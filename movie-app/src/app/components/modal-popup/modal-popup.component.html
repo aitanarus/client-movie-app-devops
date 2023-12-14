@@ -13,37 +13,35 @@
   <div class="modal-body">
     <!-- Dropdown for selecting values -->
     <select
+      *ngIf="movieLists"
       [(ngModel)]="selectedValue"
-      class="form-control"
       class="form-control custom-select"
     >
-      <option value="" disabled selected>Select a list</option>
-      <option value="option1">Option 1</option>
-      <option value="option2">Option 2</option>
-      <!-- Add more options or load them dynamically -->
+      <option value="" selected>Create a list</option>
+      <option *ngFor="let movieList of movieLists ?? []" [ngValue]="movieList">
+        {{ movieList.ListName }}
+      </option>
     </select>
 
-    <!-- Input for creating new value -->
-    <p>Create a new list</p>
-    <input
-      [(ngModel)]="newListName"
-      class="form-control"
-      placeholder="List Name"
-    />
-    <input
-      [(ngModel)]="newListDescription"
-      class="form-control"
-      placeholder="List Description"
-    />
+    <div *ngIf="!selectedValue">
+      <!-- Input for creating new value -->
+      <p>Create a new list</p>
+      <input
+        [ngClass]="{ 'invalid-input': !newListName }"
+        [(ngModel)]="newListName"
+        class="form-control"
+        placeholder="List Name"
+      />
+      <input
+        [ngClass]="{ 'invalid-input': !newListDescription }"
+        [(ngModel)]="newListDescription"
+        class="form-control"
+        placeholder="List Description"
+      />
+    </div>
   </div>
   <div class="modal-footer">
-    <button
-      type="button"
-      class="btn btn-dark"
-      (click)="modal.close('Save click')"
-    >
-      Save
-    </button>
+    <button type="button" class="btn btn-dark" (click)="onSave()">Save</button>
   </div>
 </ng-template>
 

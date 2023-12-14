@@ -181,7 +181,10 @@
                 <app-star-rating [rating]="review.Rating" [isReadOnly]="true">
                 </app-star-rating>
                 <span class="rating-value">{{ review.Rating }}</span>
-                <button class="btn" (click)="openConfirmationModal(deleteReviewConfirmation)">
+                <button
+                  class="btn"
+                  (click)="openConfirmationModal(deleteReviewConfirmation)"
+                >
                   <i class="fas fa-trash-alt"></i>
                 </button>
                 <ng-template #deleteReviewConfirmation let-modal>
@@ -233,8 +236,61 @@
       <div class="popular-movies">
         <div class="vl mb-4"><h4 class="title">My Movie Lists</h4></div>
         <div class="movies">
-          <app-movie-list></app-movie-list>
-          <div class="view-all">View all</div>
+          <ol
+            class="list-group list-group-light list-group-numbered"
+            *ngIf="profile.MovieLists && profile.MovieLists.length > 0"
+          >
+            <li
+              class="list-group-item d-flex justify-content-between align-items-start"
+              *ngFor="let list of profile.MovieLists"
+            >
+              <div class="ms-2 me-auto">
+                <div class="fw-bold" (click)="viewMovieList(list.MovieListId)">{{ list.ListName }}</div>
+                {{ list.ListDescription }}
+              </div>
+              <span class="badge badge-dark rounded-pill">{{
+                list.ImbdIds.length
+              }}</span>
+              <button
+                class="btn"
+                (click)="openConfirmationModal(deleteMovieListConfirmation)"
+              >
+                <i class="fas fa-trash-alt"></i>
+              </button>
+              <ng-template #deleteMovieListConfirmation let-modal>
+                <div class="modal-header">
+                  <h4 class="modal-title">Confirmation</h4>
+                  <button
+                    type="button"
+                    class="close"
+                    aria-label="Close"
+                    (click)="modal.dismiss('Cross click')"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  Are you sure you want to delete your movie list?
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    (click)="modal.dismiss('Cancel')"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    (click)="deleteMovieList(list); modal.close('Confirm')"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </ng-template>
+            </li>
+          </ol>
         </div>
       </div>
     </div>

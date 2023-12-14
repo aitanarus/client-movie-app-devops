@@ -5,6 +5,7 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { MovieDetailsPageComponent } from './pages/movie-details-page/movie-details-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { SignUpPageComponent } from './pages/sign-up-page/sign-up-page.component';
+import { MovieListPageComponent } from './pages/movie-list-page/movie-list-page.component';
 
 const routes: Routes = [
 
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'home', component: HomePageComponent },
   { path: 'movie/:id', component: MovieDetailsPageComponent },
   { path: 'profile', component: ProfilePageComponent },
+  { path: 'movieList/:id', component: MovieListPageComponent},
   { path: '',   redirectTo: '/home', pathMatch: 'full' },
 ];
 

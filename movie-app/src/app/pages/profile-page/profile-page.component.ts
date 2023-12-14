@@ -9,6 +9,8 @@ import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/services/user.service';
 import { Review } from 'src/app/models/review';
 import { Router } from '@angular/router';
+import { MovieList } from 'src/app/models/movieList';
+import { MovieListService } from 'src/app/services/movielist.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -31,7 +33,8 @@ export class ProfilePageComponent {
     private authService: AuthService,
     private toastr: ToastrService,
     private modalService: NgbModal,
-    private router: Router
+    private router: Router,
+    private movieListService: MovieListService
   ) {}
 
   public ngOnInit(): void {
@@ -159,5 +162,22 @@ export class ProfilePageComponent {
         console.error('Error deleting review:', error);
       }
     );
+  }
+
+  public deleteMovieList(movieList: MovieList): void {
+    this.movieListService.deleteMovieList(movieList.MovieListId).subscribe(
+      () => {
+        console.log('Movie list deleted successfully');
+        this.requestResponse = 'Movie list deleted successfully';
+        this.toastr.success(this.requestResponse, 'Success');
+      },
+      (error) => {
+        console.error('Error deleting movie list:', error);
+      }
+    );
+  }
+
+  public viewMovieList(listId: string): void {
+    this.router.navigate(['/movieList', listId]);
   }
 }
