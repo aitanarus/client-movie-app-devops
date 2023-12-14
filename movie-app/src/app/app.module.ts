@@ -16,6 +16,7 @@ import { ProfilePageComponent } from './pages/profile-page/profile-page.componen
 import { ModalPopupComponent } from './components/modal-popup/modal-popup.component';
 import { MovieListComponent } from './components/movie-list/movie-list.component';
 import { SignUpPageComponent } from './pages/sign-up-page/sign-up-page.component';
+import { MovieListPageComponent } from './pages/movie-list-page/movie-list-page.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { SignUpPageComponent } from './pages/sign-up-page/sign-up-page.component
     ModalPopupComponent,
     MovieListComponent,
     SignUpPageComponent,
+    MovieListPageComponent,
   ],
   imports: [
     BrowserModule,

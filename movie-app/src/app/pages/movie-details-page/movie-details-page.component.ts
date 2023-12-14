@@ -10,6 +10,7 @@ import { AuthService } from './../../services/auth.service';
 import { Review } from 'src/app/models/review';
 import { User } from 'src/app/models/user';
 import { Profile } from 'src/app/models/profile';
+import { CacheService } from 'src/app/services/cache.service';
 
 @Component({
   selector: 'app-movie-details-page',
@@ -23,7 +24,8 @@ export class MovieDetailsPageComponent {
   public rating: number = 0;
   public isReadOnly: boolean = false;
   public reviewText: string = '';
-  @ViewChild('popupModal') popupModal!: ModalPopupComponent;
+
+  @ViewChild(ModalPopupComponent) modalPopup!: ModalPopupComponent;
 
   user: User | undefined;
   profile: Profile | undefined;
@@ -35,7 +37,8 @@ export class MovieDetailsPageComponent {
     private movieService: MovieService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
-    private reviewService: ReviewService
+    private reviewService: ReviewService,
+    private cacheService: CacheService
   ) {}
 
   public ngOnInit(): void {
@@ -46,6 +49,9 @@ export class MovieDetailsPageComponent {
     });
 
     if (this.movieId) {
+
+      this.cacheService.set('lastVisitedMovieDetailsId', this.movieId);
+
       this.movieService.getMovieDetails(this.movieId).subscribe(
         (data: any) => {
           this.movie = data[0] as MovieDetails;
@@ -87,6 +93,10 @@ export class MovieDetailsPageComponent {
     } else {
       this.rating = newRating;
     }
+  }
+
+  public openModal(): void {
+    this.modalPopup.open(this.movieId);
   }
 
   public createReview(): void {
